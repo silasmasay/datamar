@@ -1,0 +1,62 @@
+.about {
+  h1, span {
+    color: var(--gray-500);
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 54px;
+    letter-spacing: 0.2px;
+    text-align: center;
+    position: relative;
+    margin: 4rem auto;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 122px;
+      height: 4px;
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--red-500);
+    }
+  }
+
+  p {
+    font-size: 1.25rem;
+    line-height: 32px;
+    letter-spacing: 0.2px;
+    text-align: center;
+    text-align: center;
+    color: var(--gray-300);
+
+    > span {
+      color: var(--red-500);
+      margin-left: 0.35rem;
+    }
+  }
+
+  .row {
+    gap: 2rem;
+    margin: 4rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-right: calc(var(--margin-x) * -.5);
+    margin-left: calc(var(--margin-x) * -.5);
+  }
+
+  figure {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    flex: 0 0 auto;
+    max-width: 200px;
+    text-align: center;
+  }
+}

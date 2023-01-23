@@ -1,0 +1,160 @@
+.form {
+  padding: 2rem;
+  width: 454px;
+  background: var(--white-300);
+  border-radius: 8px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
+
+  @media (max-width: 1200px) {
+    margin: auto;
+  }
+
+  h1, label {
+    color: var(--gray-500);
+  }
+
+  h1 {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  p:not([role="alert"]) {
+    font-size: 1rem;
+    color: var(--gray-500);
+    margin-bottom: calc(2rem - 0.688rem);
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.125rem;
+    cursor: pointer;
+    border: none;
+    color: var(--white);
+    background: var(--red-500);
+    transition: ease-in opacity .15s;
+
+    &:hover, &:focus {
+      opacity: 0.85;
+    }
+  }
+}
+
+.row {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  > div {
+    flex: 0 0 auto;
+    width: calc(50% - calc(var(--margin-x) * 2));
+    max-width: 100%;
+    padding-right: calc(var(--margin-x) * .5);
+    padding-left: calc(var(--margin-x) * .5);
+  }
+
+  label {
+    margin: 0.688rem 0;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0.2px;
+    display: block;
+  }
+}
+
+.country {
+  position: relative;
+
+  > div {
+    position: absolute;
+    top: 35px;
+    left: 3px;
+
+    > div {
+      border: none;
+    }
+  }
+
+  .countryBox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .countryInput {
+    padding-left: 120px !important;
+  }
+
+  input:not(.countryInput):focus {
+    box-shadow: none !important;
+  }
+
+  label {
+    margin: 0.688rem 0;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0.2px;
+    display: block;
+  }
+}
+
+.checkbox {
+  position: relative;
+  padding-left: 2rem;
+  cursor: pointer;
+  font-size: 1.125rem;
+  user-select: none;
+  margin: 1.5rem auto !important;
+
+  input {
+    display: none;
+
+    &:checked ~ span {
+      background-color: var(--red-500);
+
+      &:after {
+        display: block;
+      }
+    }
+  }
+
+  span {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    border-radius: 8px;
+    background-color: var(--gray-100);
+    
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 7px;
+      top: 3px;
+      width: 6px;
+      height: 10px;
+      border: solid var(--white);
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.alert {
+  color: var(--red-500);
+  font-weight: 500;
+  font-size: 0.825rem;
+  margin: 0.5rem 0;
+}
