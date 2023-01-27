@@ -1,6 +1,9 @@
+@use "../App.scss";
+
 .form {
   padding: 2rem;
-  width: 454px;
+  max-width: 454px;
+  width: 100%;
   background: var(--white-300);
   border-radius: 8px;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
@@ -44,117 +47,121 @@
       opacity: 0.85;
     }
   }
-}
 
-.row {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-
-  > div {
-    flex: 0 0 auto;
-    width: calc(50% - calc(var(--margin-x) * 2));
-    max-width: 100%;
-    padding-right: calc(var(--margin-x) * .5);
-    padding-left: calc(var(--margin-x) * .5);
+  .container {
+    @extend %container;
   }
 
-  label {
-    margin: 0.688rem 0;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: 0.2px;
-    display: block;
-  }
-}
-
-.country {
-  position: relative;
-
-  > div {
-    position: absolute;
-    top: 35px;
-    left: 3px;
-
+  .row {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+  
     > div {
-      border: none;
+      flex: 0 0 auto;
+      width: 50%;
+      max-width: 100%;
+      padding-right: calc(var(--margin-x) * .5);
+      padding-left: calc(var(--margin-x) * .5);
+    }
+  
+    label {
+      margin: 0.688rem 0;
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: 0.2px;
+      display: block;
     }
   }
-
-  .countryBox {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  
+  .country {
+    position: relative;
+  
+    > div {
+      position: absolute;
+      top: 35px;
+      left: 3px;
+  
+      > div {
+        border: none;
+      }
+    }
+  
+    .countryBox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  
+    .countryInput {
+      padding-left: 125px !important;
+    }
+  
+    input:not(.countryInput):focus {
+      box-shadow: none !important;
+    }
+  
+    label {
+      margin: 0.688rem 0;
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 22px;
+      letter-spacing: 0.2px;
+      display: block;
+    }
   }
-
-  .countryInput {
-    padding-left: 120px !important;
-  }
-
-  input:not(.countryInput):focus {
-    box-shadow: none !important;
-  }
-
-  label {
-    margin: 0.688rem 0;
-    font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: 0.2px;
-    display: block;
-  }
-}
-
-.checkbox {
-  position: relative;
-  padding-left: 2rem;
-  cursor: pointer;
-  font-size: 1.125rem;
-  user-select: none;
-  margin: 1.5rem auto !important;
-
-  input {
-    display: none;
-
-    &:checked ~ span {
-      background-color: var(--red-500);
-
+  
+  .checkbox {
+    position: relative;
+    padding-left: 2rem;
+    cursor: pointer;
+    font-size: 1.125rem;
+    user-select: none;
+    margin: 1.5rem auto !important;
+  
+    input {
+      display: none;
+  
+      &:checked ~ span {
+        background-color: var(--red-500);
+  
+        &:after {
+          display: block;
+        }
+      }
+    }
+  
+    span {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      height: 22px;
+      width: 22px;
+      border-radius: 8px;
+      background-color: var(--gray-100);
+      
       &:after {
-        display: block;
+        content: "";
+        position: absolute;
+        display: none;
+        left: 7px;
+        top: 3px;
+        width: 6px;
+        height: 10px;
+        border: solid var(--white);
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
       }
     }
   }
-
-  span {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    height: 22px;
-    width: 22px;
-    border-radius: 8px;
-    background-color: var(--gray-100);
-    
-    &:after {
-      content: "";
-      position: absolute;
-      display: none;
-      left: 7px;
-      top: 3px;
-      width: 6px;
-      height: 10px;
-      border: solid var(--white);
-      border-width: 0 3px 3px 0;
-      transform: rotate(45deg);
-    }
+  
+  .alert {
+    color: var(--red-500);
+    font-weight: 500;
+    font-size: 0.825rem;
+    margin: 0.5rem 0;
   }
-}
-
-.alert {
-  color: var(--red-500);
-  font-weight: 500;
-  font-size: 0.825rem;
-  margin: 0.5rem 0;
 }

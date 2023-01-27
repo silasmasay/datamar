@@ -13,12 +13,12 @@ import styles from './About.module.scss';
 export default function About() {
   return (
     <section className={styles.about}>
-      <div className="container">
+      <div className={styles.container}>
         <h1>Sobre a Datamar</h1>
 
         <p>A Datamar foi fundada em 1996 e os seus dados são utilizados a mais de duas décadas pelos armadores e terminais de contêineres da costa leste da América do Sul.</p>
 
-        <div className="container">
+        <div className={styles.container}>
           <div className={styles.row}>
             <figure>
               <img src={image1} />

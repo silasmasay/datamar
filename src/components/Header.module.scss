@@ -1,0 +1,40 @@
+@use "../App.scss";
+
+.header {
+  padding: 4rem 0;
+  display: flex;
+  width: 100%;
+  position: relative;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(to left bottom, var(--gray-400), var(--white));
+
+  .background {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: block;
+    height: 175px;
+    width: 100%;
+    background-color: var(--white);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom right;
+    background-image: url(../assets/background.svg);
+
+    @media (max-width: 1200px) {
+      .background {
+        bottom: 10rem;
+      }
+    }
+  }
+
+  .container {
+    z-index: 1;
+    @extend %container;
+  }
+
+  .row {
+    gap: 2rem;
+    @extend %row;
+  }
+}

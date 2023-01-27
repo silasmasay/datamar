@@ -3,12 +3,13 @@
   --gray-100: #B6C2D5;
   --gray-200: #B4B4B4;
   --gray-300: #64748B;
+  --gray-400: #B6C2D4;
   --gray-500: #363636;
   --red-500: #F0574B;
   --white: #FFFFFF;
   --white-300: #F3F5F8;
   --black: #000000;
-  --margin-x: 0.5rem;
+  --margin-x: 1rem;
 }
 
 * {
@@ -65,25 +66,15 @@ select {
   cursor: not-allowed;
 }
 
-.top-content {
-  padding: 4rem 0;
-  display: flex;
-  position: relative;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: top right;
-  background-image: url(./assets/background.svg);
-}
-
-.container {
+%container {
+  $padding: calc(var(--margin-x) * .5);
   margin-right: auto;
   margin-left: auto;
-  padding-right: var(--margin-x, .75rem);
-  padding-left: var(--margin-x, .75rem);
+  padding-right: var(--margin-x, $padding);
+  padding-left: var(--margin-x, $padding);
 }
 
-.row {
-  gap: 2rem;
+%row {
   display: flex;
   flex-wrap: wrap;
   margin-right: calc(var(--margin-x) * -.5);
@@ -91,25 +82,25 @@ select {
 }
 
 @media (min-width: 576px) {
-  .container {
+  %container {
     max-width: 540px;
   }
 }
 
 @media (min-width: 768px) {
-  .container {
+  %container {
     max-width: 720px;
   }
 }
 
 @media (min-width: 992px) {
-  .container {
+  %container {
     max-width: 960px;
   }
 }
 
 @media (min-width: 1200px) {
-  .container {
+  %container {
     max-width: 1140px;
   }
 }

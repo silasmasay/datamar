@@ -1,68 +1,59 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
+import { MaskedInput, createDefaultMaskGenerator } from 'react-hook-mask';
 
+import Alert from "./Alert";
 import Select from "react-select";
 import api from "../services/api";
 
 import styles from './Form.module.scss';
 
+const maskGenerator = createDefaultMaskGenerator('(99) 99999-9999');
+
 export default function Form() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, control, handleSubmit, formState: { errors } } = useForm();
   const [optionTypeCompany, setOptionTypeCompany] = useState([]);
   const [optionCountry, setOptionCountry] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+
+  const onSubmit = async (props) => {
+    const { celular, telefone } = props;
+    const phone = `+${telefone?.countryCode || '55'}${celular}`;
+    
+    const data = {
+      ...props,
+      celular: phone,
+      telefone: phone
+    }
+
+    setDisabled(true);
+    
+    try {
+      await api.post('QRCNContato', data);
+
+      Alert.fire({
+        icon: 'success',
+        title: 'Formulário enviado!'
+      });
   
-  const onSubmit = async (data) => {
-    // const result = await api.post('QRCNContato', data);
-    console.log(data, 'testre');
+      setDisabled(false);
+    } catch (e) {
+      Alert.fire({
+        icon: 'error',
+        title: 'Ouve um erro no envio'
+      });
+
+      setDisabled(false);
+    }
   }
 
   const handleTypeCompany = async () => {
-    // const data = await api.get('QRCNTipoEmpresa/lista');
-
-    const data = {
-      value: [{
-        id: 1,
-        description: "Transitário"
-      }, {
-        id: 2,
-        description: "Portos e Terminais"
-      }, {
-        id: 3,
-        description: "Importador/Exportador"
-      }]
-    }
-
+    const { data } = await api.get('QRCNTipoEmpresa/lista');
     setOptionTypeCompany(data.value);
   }
 
   const handleCountry = async () => {
-    // const data = await api.get('pais/lista');
-
-    const data = {
-      value: [{
-        id:8,
-        name:"Andorra",
-        abbreviation:"AD",
-        countryCode:"376",
-        locode:"AD",
-        image:"https://apps.datamar.com.br/new/img/flag/AD.png"
-      },{
-        id:235,
-        name:"Emirados Árabes Unidos",
-        abbreviation:"AE",
-        countryCode:"971",
-        locode:"AE",
-        image:"https://apps.datamar.com.br/new/img/flag/AE.png"
-      },{
-        id:4,
-        name:"Afeganistão",
-        abbreviation:"AF",
-        countryCode:"93",
-        locode:"AF",
-        image:"https://apps.datamar.com.br/new/img/flag/AF.png"
-      }]
-    }
-
+    const { data } = await api.get('pais/lista');
     setOptionCountry(data.value);
   }
 
@@ -175,29 +166,39 @@ export default function Form() {
 
         <div className={styles.country}>
           <label htmlFor="phone">Informe o celular</label>
-          <input
-            placeholder="(00) 00000-0000"
-            id="phone"
-            type="text"
-            className={styles.countryInput}
-            { ...register("celular", {
-              required: true,
-              maxLength: "50"
-            })}
-          />
-          <Select
-            {...register("telefone", {
-              required: true
-            })}
-            options={optionCountry}
-            formatOptionLabel={({ countryCode, abbreviation, image }) => (
-              <div className={styles.countryBox} value={countryCode}>
-                <img src={image} />
-                <span>{abbreviation}</span>
-              </div>
+          <Controller
+            control={control}
+            name="celular"
+            render={({ field: { onChange, value }}) => (
+              <MaskedInput
+                id="phone"
+                onChange={onChange}
+                value={value}
+                placeholder="(00) 00000-0000"
+                maskGenerator={maskGenerator}
+                className={styles.countryInput}
+              />
             )}
           />
-          {errors.celular?.type === 'required' && <p className={styles.alert} role="alert">Campo obrigatório!</p>}
+          <Controller
+            control={control}
+            name="telefone"
+            render={({ field: { onChange, ref }}) => (
+              <Select
+                options={optionCountry}
+                inputRef={ref}
+                onChange={onChange}
+                value={optionCountry.find(({ countryCode }) => countryCode === '55')}
+                formatOptionLabel={({ abbreviation, image }) => (
+                  <div className={styles.countryBox}>
+                    <img src={image} />
+                    <span>{abbreviation}</span>
+                  </div>
+                )}
+              />
+            )}
+          />
+          {errors.celular?.type === 'required' || errors.telefone?.type === 'required' && <p className={styles.alert} role="alert">Campo obrigatório!</p>}
         </div>
 
         <div className={styles.row}>
@@ -221,12 +222,16 @@ export default function Form() {
             <input
               id="check"
               type="checkbox"
+              {...register("check", {
+                required: true
+              })}
             />
             <span className="checkmark"></span>
+            {errors.check?.type === 'required' && <p className={styles.alert} role="alert">Campo obrigatório!</p>}
           </label>
         </div>
         
-        <button type="submit">Solicitar demonstração</button>
+        <button disabled={disabled} type="submit">Solicitar demonstração</button>
       </form>
     </aside>
   )

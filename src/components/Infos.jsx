@@ -23,7 +23,7 @@ export default function Infos() {
 
       <h3>Dúvidas? Entre em contato e fale com um de nossos<br/>especialistas:<span>0800 891 1887</span></h3>
 
-      <img src={image} alt="image" />
+      <img className={styles.image} src={image} />
     </div>
   )
 }

@@ -1,3 +1,5 @@
+@use "../App.scss";
+
 .about {
   h1, span {
     color: var(--gray-500);
@@ -38,17 +40,18 @@
       margin-left: 0.35rem;
     }
   }
-
+  
+  .container {
+    @extend %container;
+  }
+  
   .row {
     gap: 2rem;
     margin: 4rem auto;
-    display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    margin-right: calc(var(--margin-x) * -.5);
-    margin-left: calc(var(--margin-x) * -.5);
+    @extend %row;
   }
-
+  
   figure {
     display: flex;
     gap: 0.5rem;
@@ -56,7 +59,11 @@
     justify-content: space-around;
     align-items: center;
     flex: 0 0 auto;
-    max-width: 200px;
+    max-width: 175px;
     text-align: center;
+
+    @media (max-width: 1200px) {
+      width: 200px;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { MdLocationOn } from "react-icons/md";
+import { MdOutlineLocationOn } from "react-icons/md";
 import { FaLinkedinIn, FaTwitter, FaInstagram } from "react-icons/fa";
 
 import styles from './Footer.module.scss';
@@ -6,12 +6,14 @@ import styles from './Footer.module.scss';
 export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <div className="container">
+      <div className={styles.container}>
         <div className={styles.row}>
           <div className={styles.footerInfo}>
             <h3>Onde estamos?</h3>
-            <h2><MdLocationOn />São Paulo, Brasil</h2>
-            <h2><MdLocationOn />Bangalore, Índia</h2>
+            <div>
+              <h2><MdOutlineLocationOn />São Paulo, Brasil</h2>
+              <h2><MdOutlineLocationOn />Bangalore, Índia</h2>
+            </div>
           </div>
 
           <div className={styles.stripe}></div>
