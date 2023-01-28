@@ -69,6 +69,7 @@ export default function Form() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <input value="1" type="hidden" {...register("origemContatoID")} />
+        <input value="1" type="hidden" {...register("idiomaID")} />
 
         <div className={styles.row}>
           <div>
