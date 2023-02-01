@@ -11,39 +11,42 @@ import styles from './Form.module.scss';
 const maskGenerator = createDefaultMaskGenerator('(99) 99999-9999');
 
 export default function Form() {
-  const { register, control, handleSubmit, formState: { errors } } = useForm();
+  const { register, control, handleSubmit, formState: { errors, isDirty, isValid } } = useForm({
+    mode: "onBlur"
+  });
   const [optionTypeCompany, setOptionTypeCompany] = useState([]);
   const [optionCountry, setOptionCountry] = useState([]);
-  const [disabled, setDisabled] = useState(false);
 
   const onSubmit = async (props) => {
-    const { celular, telefone } = props;
-    const phone = `+${telefone?.countryCode || '55'}${celular}`;
+    const { celular, telefone, tipoEmpresaID } = props;
+    const phone = `+${telefone?.countryCode}${celular}`;
     
     const data = {
       ...props,
       celular: phone,
-      telefone: phone
+      telefone: phone,
+      tipoEmpresaID: tipoEmpresaID?.id
     }
 
-    setDisabled(true);
-    
     try {
-      await api.post('QRCNContato', data);
+      await api.post('QRCNContato', data, {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }
+      });
 
       Alert.fire({
         icon: 'success',
         title: 'Formulário enviado!'
       });
-  
-      setDisabled(false);
     } catch (e) {
+      console.error(e);
+
       Alert.fire({
         icon: 'error',
         title: 'Ouve um erro no envio'
       });
-
-      setDisabled(false);
     }
   }
 
@@ -134,19 +137,30 @@ export default function Form() {
         </div>
 
         <div className={styles.row}>
-          <div>
+          <div className={styles.company}>
             <label htmlFor="company-type">Tipo de empresa</label>
-            <select
+            <Controller
+              control={control}
               id="company-type"
-              { ...register("tipoEmpresaID", {
+              name="tipoEmpresaID"
+              rules={{
                 required: true
-              })}
-            >
-              <option value="">Selecione um tipo</option>
-              {optionTypeCompany.map(({ id, description }) => (
-                <option key={id} value={id}>{description}</option>
-              ))}
-            </select>
+              }}
+              render={({ field: { onChange, value, ref }}) => (
+                <Select
+                  placeholder="Selecione um tipo"
+                  options={optionTypeCompany}
+                  inputRef={ref}
+                  value={value}
+                  onChange={onChange}
+                  isSearchable={true}
+                  getOptionValue={(option) => option.description}
+                  formatOptionLabel={({ description }) => (
+                    <span>{description}</span>
+                  )}
+                />
+              )}
+            />
             {errors.tipoEmpresaID?.type === 'required' && <p className={styles.alert} role="alert">Campo obrigatório!</p>}
           </div>
 
@@ -170,9 +184,13 @@ export default function Form() {
           <Controller
             control={control}
             name="celular"
+            id="phone"
+            rules={{
+              required: true,
+              maxLength: 11
+            }}
             render={({ field: { onChange, value }}) => (
               <MaskedInput
-                id="phone"
                 onChange={onChange}
                 value={value}
                 placeholder="(00) 00000-0000"
@@ -184,12 +202,19 @@ export default function Form() {
           <Controller
             control={control}
             name="telefone"
-            render={({ field: { onChange, ref }}) => (
+            value={optionCountry.find(({ countryCode }) => countryCode === '55')}
+            rules={{
+              required: true
+            }}
+            render={({ field: { onChange, value, ref }}) => (
               <Select
+                placeholder="BRA"
                 options={optionCountry}
                 inputRef={ref}
+                value={value}
                 onChange={onChange}
-                value={optionCountry.find(({ countryCode }) => countryCode === '55')}
+                isSearchable={true}
+                getOptionValue={(option) => option.abbreviation}
                 formatOptionLabel={({ abbreviation, image }) => (
                   <div className={styles.countryBox}>
                     <img src={image} />
@@ -199,7 +224,7 @@ export default function Form() {
               />
             )}
           />
-          {errors.celular?.type === 'required' || errors.telefone?.type === 'required' && <p className={styles.alert} role="alert">Campo obrigatório!</p>}
+          {errors.celular || errors.telefone && <p className={styles.alert} role="alert">Campo obrigatório!</p>}
         </div>
 
         <div className={styles.row}>
@@ -232,7 +257,7 @@ export default function Form() {
           </label>
         </div>
         
-        <button disabled={disabled} type="submit">Solicitar demonstração</button>
+        <button disabled={!isDirty || !isValid} type="submit">Solicitar demonstração</button>
       </form>
     </aside>
   )
